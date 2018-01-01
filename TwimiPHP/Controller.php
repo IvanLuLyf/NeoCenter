@@ -36,14 +36,14 @@ class Controller
         $this->_view->render($action, $useHeader, $useFooter);
     }
 
-    public function filter($filterName)
+    public function filter($filterName, $param = array())
     {
         $filter = $filterName . 'Filter';
         if (!class_exists($filter)) {
             exit($filter . ' Not Found');
         }
         $dispatch = new $filter();
-        return call_user_func(array($dispatch, "doFilter"));
+        return call_user_func_array(array($dispatch, "doFilter"), $param);
     }
 
     public function storage($storageName = TP_STORAGE)

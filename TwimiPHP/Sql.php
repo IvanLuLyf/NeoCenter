@@ -90,7 +90,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        return $sth->rowCount();
+        return Database::pdo()->lastInsertId();
     }
 
     public function update($data)
