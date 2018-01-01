@@ -11,30 +11,17 @@ class FeedController extends Controller
     public function send()
     {
         if ($this->_mode == 1) {
-            if (isset($_POST['appkey']) && isset($_POST['token']) && isset($_POST['message'])) {
-                $appKey = $_POST['appkey'];
-                $appToken = $_POST['token'];
-                $message = $_POST['message'];
-                if ($apiInfo = (new ApiModel())->check($appKey)) {
-                    if ($apiInfo['type'] == 1 || $apiInfo['canFeed'] == true) {
-                        $userId = (new TokenModel())->check($appKey, $appToken);
-                        if ($userId != 0) {
-                            $user = (new UserModel())->getUserByUid($userId);
-                            $feedid = (new FeedModel())->sendFeed($message, $apiInfo['name'], $userId, $user['username'], $user['nickname'], time());
-                            $this->assign('ret', 0);
-                            $this->assign('status', 'ok');
-                            $this->assign('tid', $feedid);
-                        } else {
-                            $this->assign('ret', 2003);
-                            $this->assign('status', 'invalid token');
-                        }
-                    } else {
-                        $this->assign('ret', 2002);
-                        $this->assign('status', 'permission denied');
-                    }
+            if (isset($_POST['message'])) {
+                $api = $this->filter('Api', ['canFeed']);
+                if ($api['ret'] == 0) {
+                    $message = $_POST['message'];
+                    $user = (new UserModel())->getUserByUid($api['uid']);
+                    $feedid = (new FeedModel())->sendFeed($message, $api['name'], $api['uid'], $user['username'], $user['nickname'], time());
+                    $this->assign('ret', 0);
+                    $this->assign('status', 'ok');
+                    $this->assign('tid', $feedid);
                 } else {
-                    $this->assign('ret', 2001);
-                    $this->assign('status', 'invalid appkey');
+                    $this->assignAll($api);
                 }
             } else {
                 $this->assign('ret', 1004);
