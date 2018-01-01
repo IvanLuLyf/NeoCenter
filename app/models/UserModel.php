@@ -81,6 +81,11 @@ class UserModel extends Model
                             'token' => $token,
                             'nickname' => $nickname
                         );
+                    } else {
+                        $response = array(
+                            'ret' => 1006,
+                            'status' => "database error"
+                        );
                     }
                 } else {
                     $response = array(
@@ -104,7 +109,15 @@ class UserModel extends Model
         return $user;
     }
 
-    public function getUserByUid($uid){
-        return $this->where(["id = ?"], [$uid])->fetch();
+    public function getUserByUid($uid)
+    {
+        $user = $this->where(["id = ?"], [$uid])->fetch();
+        $response = array(
+            'id' => $uid,
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'nickname' => $user['nickname']
+        );
+        return $response;
     }
 }
