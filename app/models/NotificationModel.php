@@ -14,4 +14,18 @@ class NotificationModel extends Model
     {
         return $this->where(["uid = ? and is_read=0"], [$uid])->fetch("count(*) as noticnt");
     }
+
+    public function notify($aid, $tid, $toid, $fromid, $action, $message, $timeline)
+    {
+        $datas = array(
+            'aid' => $aid,
+            'uid' => $toid,
+            'tid' => $tid,
+            'from_uid' => $fromid,
+            'action' => $action,
+            'message' => $message,
+            'timeline' => $timeline
+        );
+        return $this->add($datas);
+    }
 }
