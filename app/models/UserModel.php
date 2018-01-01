@@ -103,4 +103,8 @@ class UserModel extends Model
         $user = $this->where(["token = ? and expire>UNIX_TIMESTAMP()"], [$token])->fetch();
         return $user;
     }
+
+    public function getUserByUid($uid){
+        return $this->where(["id = ?"], [$uid])->fetch();
+    }
 }

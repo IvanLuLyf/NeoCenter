@@ -15,8 +15,10 @@ class TestController extends Controller
             $appToken = $_POST['token'];
             $apiInfo = (new ApiModel())->check($appKey);
             $userId = (new TokenModel())->check($appKey,$appToken);
+            $feed = (new FeedModel())->listFeed($userId);
             $this->assign("api",$apiInfo);
             $this->assign("uid",$userId);
+            $this->assign("feed",$feed);
             $this->render();
         }
     }
