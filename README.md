@@ -7,13 +7,14 @@ Response:
 
 ```
 {
-    "status":"ok",
-    "ret":0,
-    "id":"[Your User ID]",
-    "email":"[Your Email]",
-    "nickname":"[Your Nickname]",
-    "token":[Token],
-    "expire":[Expire Time]
+    "ret" : 0,
+    "status" : "ok",
+    "id" : "[Your User ID]",
+    "username" : "[Your Username]",
+    "email" : "[Your Email]",
+    "token" : "[Access Token]",
+    "nickname" : "[Your Nickname]",
+    "expire" : "[Expire Time]"
 }
 ```
     
@@ -26,13 +27,14 @@ Response:
 
 ```
 {
-    "status":"ok",
-    "ret":0,
-    "id":"[Your User ID]",
-    "email":"[Your Email]",
-    "nickname":"[Your Nickname]",
-    "token":[Token],
-    "expire":[Expire Time]
+    "ret" : 0,
+    "status" : "ok",
+    "id" : "[Your User ID]",
+    "username" : "[Your Username]",
+    "email" : "[Your Email]",
+    "token" : "[Access Token]",
+    "nickname" : "[Your Nickname]",
+    "expire" : "[Expire Time]"
 }
 ```
 
