@@ -3,7 +3,7 @@
 ## Return Code Reference
 
 |  Code  | Description |
-|------- |------------:|
+|------- |-------------|
 |0       |ok           |
 |1001    |password error|
 |1002    |user not exists|
