@@ -12,6 +12,9 @@
 |1005    |invalid username|
 |1006    |database error|
 |1007    |wrong file|
+|2001    |invalid appkey|
+|2002    |permission denied|
+|3001    |invalid tid|
 
 ## User Login
 URL : `/api/user/login?username=[Your Username]&password=[Your Password]`
