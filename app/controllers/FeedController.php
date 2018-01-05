@@ -8,7 +8,7 @@
  */
 class FeedController extends Controller
 {
-    public function send()
+    public function ac_send()
     {
         if ($this->_mode == 1) {
             if (isset($_POST['message'])) {
@@ -31,10 +31,10 @@ class FeedController extends Controller
         $this->render();
     }
 
-    public function view($tid = 0, $page = 1)
+    public function ac_view($tid = 0, $page = 1)
     {
-        if (isset($_GET['tid'])) $tid = $_GET['tid'];
-        if (isset($_GET['page'])) $page = $_GET['page'];
+        if (isset($_REQUEST['tid'])) $tid = $_REQUEST['tid'];
+        if (isset($_REQUEST['page'])) $page = $_REQUEST['page'];
         if ($this->_mode == 1) {
             $api = $this->filter('Api', ['canFeed']);
             if ($api['ret'] == 0) {
@@ -57,9 +57,9 @@ class FeedController extends Controller
         $this->render();
     }
 
-    public function comment($tid = 0)
+    public function ac_comment($tid = 0)
     {
-        if (isset($_GET['tid'])) $tid = $_GET['tid'];
+        if (isset($_REQUEST['tid'])) $tid = $_REQUEST['tid'];
         if ($this->_mode == 1) {
             if (isset($_POST['message'])) {
 

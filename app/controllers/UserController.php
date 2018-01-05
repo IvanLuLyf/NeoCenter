@@ -8,7 +8,7 @@
  */
 class UserController extends Controller
 {
-    public function login()
+    public function ac_login()
     {
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $username = $_POST['username'];
@@ -35,6 +35,11 @@ class UserController extends Controller
                 $appSecret = isset($_POST['appsecret']) ? $_POST['appsecret'] : '';
                 if (($apiInfo = (new ApiModel())->validate($appKey, $appSecret)) != null) {
                     if ($apiInfo['type'] == 1) {
+                        if ($response['ret'] == 0) {
+                            $appToken = (new TokenModel())->token($response['id'], $appKey);
+                            $response['token'] = $appToken['token'];
+                            $response['expire'] = $appToken['expire'];
+                        }
                         $this->assignAll($response);
                     } else {
                         $this->assign('ret', 2002);
@@ -49,7 +54,7 @@ class UserController extends Controller
         $this->render();
     }
 
-    public function register()
+    public function ac_register()
     {
         if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])) {
             $username = $_POST['username'];
@@ -95,32 +100,55 @@ class UserController extends Controller
         $this->render();
     }
 
-    public function logout()
+    public function ac_logout()
     {
         session_start();
         unset($_SESSION['token']);
         header('Location: /user/login');
     }
 
-    public function avatar()
+    public function ac_avatar($uid = 0)
     {
-        $uid = isset($_GET['uid']) ? $_GET['uid'] : null;
+        $uid = isset($_GET['uid']) ? $_GET['uid'] : $uid;
         $username = isset($_GET['username']) ? $_GET['username'] : null;
-        $imgUrl = "/static/images/avatar.jpg";
-        if ($uid != null) {
-            if ($row = (new AvatarModel())->where(["uid = :id"], [':id' => $uid])->fetch()) {
-                $imgUrl = $row['url'];
+        if (isset($_FILES['avatar'])) {
+            if ($this->_mode == 1) {
+                $api = $this->filter('Api', ['']);
+                if ($api['ret'] == 0) {
+                    if ((($_FILES["avatar"]["type"] == "image/gif") || ($_FILES["avatar"]["type"] == "image/jpeg") || ($_FILES["avatar"]["type"] == "image/pjpeg"))
+                        && ($_FILES["avatar"]["size"] < 2000000)
+                    ) {
+                        $t = time() % 1000;
+                        $this->storage()->upload("avatar/" . $api['uid'] . '_' . $t . ".jpg", $_FILES["avatar"]["tmp_name"]);
+                        $url = $this->storage()->geturl("avatar/" . $api['uid'] . '_' . $t . ".jpg");
+                        (new AvatarModel())->upload($api['uid'], $url);
+                        $response = array('ret' => 0, 'status' => 'ok', 'url' => $url);
+                    } else {
+                        $response = array('ret' => 1007, 'status' => 'wrong file');
+                    }
+                    $this->assignAll($response);
+                } else {
+                    $this->assignAll($api);
+                }
             }
-            Header("Location:$imgUrl");
-        } else if ($username != null) {
-            if ($uid = (new UserModel())->where(["username = :username"], [':username' => $username])->fetch()['id']) {
+            $this->render();
+        } else {
+            $imgUrl = "/static/images/avatar.jpg";
+            if ($username != null) {
+                if ($uid = (new UserModel())->where(["username = :username"], [':username' => $username])->fetch()['id']) {
+                    if ($row = (new AvatarModel())->where(["uid = :id"], [':id' => $uid])->fetch()) {
+                        $imgUrl = $row['url'];
+                    }
+                }
+                Header("Location:$imgUrl");
+            } else if ($uid != null) {
                 if ($row = (new AvatarModel())->where(["uid = :id"], [':id' => $uid])->fetch()) {
                     $imgUrl = $row['url'];
                 }
+                Header("Location:$imgUrl");
+            } else {
+                Header("Location:$imgUrl");
             }
-            Header("Location:$imgUrl");
-        } else {
-            Header("Location:$imgUrl");
         }
     }
 }

@@ -55,11 +55,11 @@ class TwimiPHP
         if (!class_exists($controller)) {
             exit($controller . ' Not Found');
         }
-        if (!method_exists($controller, $actionName)) {
+        if (!method_exists($controller, 'ac_' .$actionName)) {
             exit($actionName . ' Not Exist');
         }
         $dispatch = new $controller($controllerName, $actionName, $this->mode);
-        call_user_func_array(array($dispatch, $actionName), $param);
+        call_user_func_array(array($dispatch, 'ac_' . $actionName), $param);
     }
 
     public function setReporting()

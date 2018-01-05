@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: IvanLu
@@ -25,5 +26,10 @@ class Storage
     public function remove($filename)
     {
 
+    }
+
+    public function geturl($filename)
+    {
+        return "";
     }
 }
