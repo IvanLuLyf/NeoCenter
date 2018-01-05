@@ -1,5 +1,18 @@
 #TwimiCenter Neo
 
+## Return Code Reference
+
+|  Code  | Description |
+|------- |------------:|
+|0       |ok           |
+|1001    |password error|
+|1002    |user not exists|
+|1003    |username exists|
+|1004    |empty arguments|
+|1005    |invalid username|
+|1006    |database error|
+|1007    |wrong file|
+
 ## User Login
 URL : `/api/user/login?username=[Your Username]&password=[Your Password]`
 
