@@ -18,4 +18,31 @@ class TokenModel extends Model
             return 0;
         }
     }
+
+    public function token($uid, $appKey)
+    {
+        $timeline = time();
+        if ($tokenRow = $this->where(["appkey = ? and uid = ?"], [$appKey, $uid])->fetch()) {
+            if ($timeline < intval($tokenRow['expire'])) {
+                $token = $tokenRow['token'];
+                $expire = $tokenRow['expire'];
+            } else {
+                $tokenid = $tokenRow['id'];
+                $token = md5($uid + $appKey + $timeline);
+                $expire = $timeline + 604800;
+                $updates = array('token' => $token, 'expire' => $expire);
+                $this->where(["id = :id"], [':id' => $tokenid])->update($updates);
+            }
+        } else {
+            $token = md5($uid + $appKey + $timeline);
+            $expire = $timeline + 604800;
+            $datas = array('uid' => $uid, 'appkey' => $appKey, 'token' => $token, 'expire' => $expire);
+            $this->add($datas);
+        }
+        $response = array(
+            'token' => $token,
+            'expire' => $expire
+        );
+        return $response;
+    }
 }

@@ -14,7 +14,7 @@ class AvatarModel extends Model
     {
         if ($this->where(["uid = ?"], [$uid])->fetch()) {
             $updates = array('url' => $path);
-            return $this->where(["uid = ?"], [$uid])->update($updates);
+            return $this->where(["uid = :uid"], [':uid' => $uid])->update($updates);
         } else {
             $datas = array('uid' => $uid, 'url' => $path);
             return $this->add($datas);

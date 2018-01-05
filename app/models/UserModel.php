@@ -31,7 +31,8 @@ class UserModel extends Model
                     'username' => $user['username'],
                     'email' => $user['email'],
                     'token' => $token,
-                    'nickname' => $user['nickname']
+                    'nickname' => $user['nickname'],
+                    'expire' => $timeline + 604800
                 );
             } else {
                 $response = array(
