@@ -70,11 +70,11 @@ class Sql
         return $sth->fetch();
     }
 
-    public function delete($id)
+    public function delete()
     {
-        $sql = sprintf("delete from `%s` where `%s` = :%s", $this->table, $this->primary, $this->primary);
+        $sql = sprintf("delete from `%s` where %s", $this->table, $this->filter);
         $sth = Database::pdo()->prepare($sql);
-        $sth = $this->formatParam($sth, [$this->primary => $id]);
+        $sth = $this->formatParam($sth, $this->param);
         $sth->execute();
         $this->join = '';
         $this->filter = '';
