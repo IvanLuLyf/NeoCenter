@@ -123,7 +123,7 @@ class FeedController extends Controller
 
     function ac_like()
     {
-        if (isset($_REQUEST['tid'])) $tid = $_REQUEST['tid'];
+        $tid = isset($_REQUEST['tid']) ? $_REQUEST['tid'] : 0;
         if ($this->_mode == 1) {
             $api = $this->filter('Api', ['canFeed']);
             if ($api['ret'] == 0) {
