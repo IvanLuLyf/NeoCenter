@@ -107,6 +107,62 @@ class UserController extends Controller
         header('Location: /user/login');
     }
 
+    function ac_getidcode()
+    {
+        if ($this->_mode == 1) {
+            $api = $this->filter('Api', ['']);
+            if ($api['ret'] == 0) {
+                $code = (new IdCodeModel())->getIdCode($api['uid']);
+                $this->assign('ret', 0);
+                $this->assign('status', 'ok');
+                $this->assign('code', $code);
+            } else {
+                $this->assignAll($api);
+            }
+        }
+        $this->render();
+    }
+
+    function ac_getinfo()
+    {
+        if ($this->_mode == 1) {
+            $api = $this->filter('Api', ['']);
+            if ($api['ret'] == 0) {
+                $username = isset($_REQUEST['username']) ? $_REQUEST['username'] : '';
+                $idcode = isset($_REQUEST['idcode']) ? $_REQUEST['idcode'] : '';
+                if ($username == '' && $idcode == '') {
+                    $response = (new UserModel())->getUserByUid($api['uid']);
+                    $this->assign('ret', 0);
+                    $this->assign('status', 'ok');
+                    $this->assignAll($response);
+                } else if ($idcode != '') {
+                    $uid = (new IdCodeModel())->getUidByIdCode($idcode);
+                    if ($uid != 0) {
+                        $response = (new UserModel())->getUserByUid($uid);
+                        $this->assign('ret', 0);
+                        $this->assign('status', 'ok');
+                        $this->assignAll($response);
+                    } else {
+                        $this->assign('ret', 1008);
+                        $this->assign('status', 'invalid idcode');
+                    }
+                } else {
+                    if ($row = (new UserModel())->getUserByUsername($username)) {
+                        $this->assign('ret', 0);
+                        $this->assign('status', 'ok');
+                        $this->assignAll($row);
+                    } else {
+                        $this->assign('ret', 1005);
+                        $this->assign('status', 'invalid username');
+                    }
+                }
+            } else {
+                $this->assignAll($api);
+            }
+        }
+        $this->render();
+    }
+
     public function ac_avatar($uid = 0)
     {
         $uid = isset($_GET['uid']) ? $_GET['uid'] : $uid;
