@@ -23,6 +23,7 @@ class UserController extends Controller
                         session_start();
                         $_SESSION['token'] = $response['token'];
                         header('Location: /index/index');
+                        break;
                     case 1001:
                         $this->assign('tp_error_msg', '密码错误');
                         break;
@@ -71,6 +72,7 @@ class UserController extends Controller
                         session_start();
                         $_SESSION['token'] = $response['token'];
                         header('Location: /index/index');
+                        break;
                     case 1003:
                         $this->assign('tp_error_msg', '用户名已存在');
                         break;
