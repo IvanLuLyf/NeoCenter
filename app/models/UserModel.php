@@ -121,4 +121,16 @@ class UserModel extends Model
         );
         return $response;
     }
+
+    public function getUserByUsername($username)
+    {
+        $user = $this->where(["username = ?"], [$username])->fetch();
+        $response = array(
+            'id' => $user['id'],
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'nickname' => $user['nickname']
+        );
+        return $response;
+    }
 }

@@ -21,7 +21,7 @@ class FeedModel extends Model
             ->fetchAll("tp_feeds.*,tp_friend.notename,(tp_like.state is not null) as islike");
     }
 
-    public function sendFeed($message, $source, $uid, $username, $nickname, $timeline)
+    public function sendFeed($message, $source, $uid, $username, $nickname, $timeline, $image = 0)
     {
         $datas = array(
             'uid' => $uid,
@@ -29,7 +29,8 @@ class FeedModel extends Model
             'nickname' => $nickname,
             'source' => $source,
             'message' => $message,
-            'timeline' => $timeline
+            'timeline' => $timeline,
+            'image' => $image
         );
         return $this->add($datas);
     }
@@ -37,5 +38,14 @@ class FeedModel extends Model
     public function getFeed($tid)
     {
         return $this->where(["tid = ?"], [$tid])->fetch();
+    }
+
+    public function likeFeed($tid)
+    {
+        $row = $this->where(["tid = :tid"], [':tid' => $tid])->fetch();
+        $updates = array('like_num' => intval($row['like_num']) + 1);
+        $this->where(["tid = :tid"], [':tid' => $tid])->update($updates);
+        $row = $this->where(["tid = :tid"], [':tid' => $tid])->fetch();
+        return intval($row['like_num']);
     }
 }
