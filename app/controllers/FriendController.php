@@ -24,4 +24,22 @@ class FriendController extends Controller
         }
         $this->render();
     }
+
+    function ac_note()
+    {
+        if (isset($_POST['username']) && isset($_POST['notename'])) {
+            $fusername = $_POST['username'];
+            $fnotename = $_POST['notename'];
+            if ($this->_mode == 1) {
+                $api = $this->filter('Api', ['canGetFriend']);
+                if ($api['ret'] == 0) {
+                    $result = (new FriendModel())->noteFriend($api['uid'], $fusername, $fnotename);
+                    $this->assignAll($result);
+                } else {
+                    $this->assignAll($api);
+                }
+            }
+        }
+        $this->render();
+    }
 }
