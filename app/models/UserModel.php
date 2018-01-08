@@ -12,7 +12,7 @@ class UserModel extends Model
 
     public function login($username, $password)
     {
-        $user = $this->where(["email = ? or username = ?"], [$username, $username])->fetch();
+        $user = $this->where(["username = :username or email = :email"], [':username' => $username, ':email' => $username])->fetch();
         if ($user != null) {
             if ($user['password'] == md5($password)) {
                 $timeline = time();
@@ -52,7 +52,7 @@ class UserModel extends Model
     public function register($username, $password, $email, $nickname = '')
     {
         if (preg_match('/^[A-Za-z0-9_]+$/u', $username) && strlen($username) >= 4) {
-            if ($this->where(["email = ? or username = ?"], [$username, $username])->fetch()) {
+            if ($this->where(["username = :username or email = :email"], [':username' => $username, ':email' => $email])->fetch()) {
                 $response = array(
                     'ret' => 1003,
                     'status' => "username exists"
