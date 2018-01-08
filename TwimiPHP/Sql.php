@@ -55,7 +55,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        $param = array();
+        $this->param = array();
         return $sth->fetchAll();
     }
 
@@ -67,7 +67,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        $param = array();
+        $this->param = array();
         return $sth->fetch();
     }
 
@@ -79,7 +79,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        $param = array();
+        $this->param = array();
         return $sth->rowCount();
     }
 
@@ -92,7 +92,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        $param = array();
+        $this->param = array();
         return Database::pdo()->lastInsertId();
     }
 
@@ -105,7 +105,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
-        $param = array();
+        $this->param = array();
         return $sth->rowCount();
     }
 
