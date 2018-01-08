@@ -9,7 +9,6 @@
 class Sql
 {
     protected $table;
-    protected $primary = 'id';
     private $filter = '';
     private $join = '';
     private $param = array();
@@ -56,6 +55,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
+        $param = array();
         return $sth->fetchAll();
     }
 
@@ -67,6 +67,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
+        $param = array();
         return $sth->fetch();
     }
 
@@ -78,6 +79,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
+        $param = array();
         return $sth->rowCount();
     }
 
@@ -90,6 +92,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
+        $param = array();
         return Database::pdo()->lastInsertId();
     }
 
@@ -102,6 +105,7 @@ class Sql
         $sth->execute();
         $this->join = '';
         $this->filter = '';
+        $param = array();
         return $sth->rowCount();
     }
 
