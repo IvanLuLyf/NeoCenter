@@ -42,4 +42,42 @@ class FriendController extends Controller
         }
         $this->render();
     }
+
+    function ac_add()
+    {
+        if (isset($_POST['username'])) {
+            $fusername = $_POST['username'];
+            if ($this->_mode == 1) {
+                $api = $this->filter('Api', ['canGetFriend']);
+                if ($api['ret'] == 0) {
+                    $user = (new UserModel())->getUserByUid($api['uid']);
+                    $fuser = (new UserModel())->getUserByUsername($fusername);
+                    $result = (new FriendModel())->addFriend($user['id'], $fuser['id'], $user['username'], $fuser['username'], $user['nickname'], $fuser['nickname']);
+                    $this->assignAll($result);
+                } else {
+                    $this->assignAll($api);
+                }
+            }
+        }
+        $this->render();
+    }
+
+    function ac_accept()
+    {
+        if (isset($_POST['username'])) {
+            $fusername = $_POST['username'];
+            if ($this->_mode == 1) {
+                $api = $this->filter('Api', ['canGetFriend']);
+                if ($api['ret'] == 0) {
+                    $user = (new UserModel())->getUserByUid($api['uid']);
+                    $fuser = (new UserModel())->getUserByUsername($fusername);
+                    $result = (new FriendModel())->acceptFriend($user['id'], $fuser['id'], $user['username'], $fuser['username']);
+                    $this->assignAll($result);
+                } else {
+                    $this->assignAll($api);
+                }
+            }
+        }
+        $this->render();
+    }
 }

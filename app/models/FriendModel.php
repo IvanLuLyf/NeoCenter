@@ -38,4 +38,50 @@ class FriendModel extends Model
         }
         return $response;
     }
+
+    public function addFriend($uid, $fuid, $username, $fusername, $nickname, $fnickname)
+    {
+        if ($username != $fusername) {
+            if ($this->where(["uid = :uid and username = :username"], [':uid' => $uid, ':username' => $fusername])->fetch()) {
+                $response = array(
+                    'ret' => 1009,
+                    'status' => "already exist"
+                );
+            } else {
+                $datas = array('uid' => $uid, 'fuid' => $fuid, 'username' => $fusername, 'notename' => $fnickname, 'state' => 0);
+                $this->add($datas);
+                $datas = array('uid' => $fuid, 'fuid' => $uid, 'username' => $username, 'notename' => $nickname, 'state' => 1);
+                $this->add($datas);
+                $response = array(
+                    'ret' => 0,
+                    'status' => "ok"
+                );
+            }
+        } else {
+            $response = array(
+                'ret' => 1005,
+                'status' => "invalid username"
+            );
+        }
+        return $response;
+    }
+
+    public function acceptFriend($uid, $fuid, $username, $fusername)
+    {
+        if ($row = $this->where(["uid = :uid and username = :username and state = 1"], [':uid' => $uid, ':username' => $fusername])->fetch()) {
+            $updates = array('state' => 2);
+            $this->where(["uid = :uid and username= :username"], [':uid' => $uid, ':username' => $fusername])->update($updates);
+            $this->where(["uid = :uid and username= :username"], [':uid' => $fuid, ':username' => $username])->update($updates);
+            $response = array(
+                'ret' => 0,
+                'status' => "ok"
+            );
+        } else {
+            $response = array(
+                'ret' => 1005,
+                'status' => "invalid username"
+            );
+        }
+        return $response;
+    }
 }
