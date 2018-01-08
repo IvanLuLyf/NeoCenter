@@ -14,6 +14,7 @@ class ApiModel extends Model
     {
         if ($row = $this->where(["appkey = ?"], [$appKey])->fetch()) {
             $reponse = array(
+                'id' => $row['id'],
                 'name' => $row['appname'],
                 'type' => $row['type'],
                 'canGetInfo' => (intval($row['auth']) & 1) && true,
@@ -30,6 +31,7 @@ class ApiModel extends Model
     {
         if ($row = $this->where(["appkey = ? and appsecret = ?"], [$appKey, $appSecret])->fetch()) {
             $reponse = array(
+                'id' => $row['id'],
                 'name' => $row['appname'],
                 'type' => $row['type'],
                 'canGetInfo' => (intval($row['auth']) & 1) && true,
