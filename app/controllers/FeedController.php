@@ -71,6 +71,7 @@ class FeedController extends Controller
                             $feed['images'] = (new AttachModel())->getAttachByTid($feed['tid']);
                         }
                     }
+                    $this->assign('noticnt', (new NotificationModel())->getUnreadCnt($api['uid'])['noticnt']);
                     $this->assign('feeds', $feeds);
                 } else {
                     $feed = (new FeedModel())->getFeed($tid);
