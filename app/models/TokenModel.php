@@ -22,7 +22,7 @@ class TokenModel extends Model
     public function token($uid, $appKey)
     {
         $timeline = time();
-        if ($tokenRow = $this->where(["appkey = ? and uid = ?"], [$appKey, $uid])->fetch()) {
+        if ($tokenRow = $this->where(["appkey = :appkey and uid = :uid"], [':appkey' => $appKey, ':uid' => $uid])->fetch()) {
             if ($timeline < intval($tokenRow['expire'])) {
                 $token = $tokenRow['token'];
                 $expire = $tokenRow['expire'];
